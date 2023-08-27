@@ -1,0 +1,9 @@
+<div class="layout-container">
+  <div [dir]="direction" class="flex">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="w-full px-10 h-screen overflow-auto">
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+  </div>
+</div>

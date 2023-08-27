@@ -1,0 +1,139 @@
+<ng-container *ngIf="service ; else showSpinner">
+  <div class="search-container justify-between">
+    <div class="sm:flex items-center flex-wrap w-full">
+      <app-search-input (isSearchingFunc)="isSearching($event)" [placeholder]="'سرچ براساس عنوان'"
+                        [queryString]="'Name'"></app-search-input>
+      <app-dropdown (isSearchingFunc)="isSearching($event)" [data]="employeeType"
+                    [optionLabel]="'Value'" [optionValue]="'Key'" [placeholder]="'سرچ براساس نوع کارمند سرویس دهنده'"
+                    [queryString]="'EmployeeType'"></app-dropdown>
+    </div>
+    <div>
+      <button (click)="showModal = true" class="my-2 py-2 px-4 bg-secondary rounded-md text-white flex items-center">
+        <i class="ml-2" inlineSVG="assets/icons/plus-white.svg"></i>
+        جدید
+      </button>
+    </div>
+  </div>
+  <div class="table-container">
+    <p-table [tableStyle]="{ 'min-width': '50rem' }" [value]="service.data" class="custom-table">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>عنوان</th>
+          <th>پرسنل</th>
+          <th>قیمت پایه</th>
+          <th>قیمت تعداد</th>
+          <th>هزینه کنسلی</th>
+          <th>درصد سود</th>
+          <th>توضیحات</th>
+          <th class="max-w-[20px]"></th>
+        </tr>
+      </ng-template>
+      <ng-template let-customer pTemplate="body">
+        <tr>
+          <td>{{customer.Name}}</td>
+          <td>{{employeeEnum[customer.EmployeeType]}}</td>
+          <td>{{customer.BasePrice | number:'1.0-2'}}</td>
+          <td>{{customer.SecondPrice | number:'1.0-2'}}</td>
+          <td>{{customer.PrePayment | number:'1.0-2'}}</td>
+          <td>{{customer.Percent}}%</td>
+          <td>{{customer.Description ?? '-'}}</td>
+          <td class="flex items-center justify-end">
+            <i (click)="edit(customer)" class="cursor-pointer block max-w-max mx-3" inlineSVG="assets/icons/edit.svg"
+               pTooltip="ویرایش" tooltipPosition="top"></i>
+            <img (click)="confirm($event,customer?.Id)" alt="" class="cursor-pointer block max-w-max"
+                 pTooltip="حذف" src="assets/icons/recycle-red.svg" tooltipPosition="top"/>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" style="text-align: center!important;">خدماتی یافت نشد.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div>
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      *ngIf="totalCount"
+      [rows]="pageSize"
+      [totalRecords]="totalCount"
+      class="paginator-custom"></p-paginator>
+  </div>
+</ng-container>
+<ng-template #showSpinner>
+  <div class="flex items-center justify-center h-[calc(100vh_-_100px)]">
+    <app-spinner [spinnerColor]="'#000'"></app-spinner>
+  </div>
+</ng-template>
+<p-dialog (onHide)="closeModal()" [(visible)]="showModal"
+          [closable]="true" [draggable]="false" [header]="editMode ? 'ویرایش' : 'جستجو'"
+          [modal]="true" [resizable]="false" [style]="{ backgroundColor:'#f0eff3','width': '600px' }"
+          class="custom-dialog">
+  <div>
+    <form [formGroup]="myForm" class="form-controller">
+      <div class="flex items-center flex-wrap">
+        <div class="ml-1 first">
+          <div class="ml-2">شماره تلفن</div>
+          <span>{{phoneNumber}}</span>
+        </div>
+        <div class="flex items-center md:flex-nowrap flex-wrap">
+          <div class="mr-1 w-full md:w-1/2 my-4">
+            <div class="required">عنوان</div>
+            <input [class.input-custom-error-2]="myForm.get('Name')?.hasError('required')" autofocus
+                   class="input-custom max-h-[36px] w-full"
+                   formControlName="Name"/>
+          </div>
+          <div class="mr-1 w-full md:w-1/2">
+            <div class="required">نوع کارمند سرویس دهنده</div>
+            <p-dropdown [class.input-custom-error-2]="myForm.get('EmployeeName')?.hasError('required')"
+                        [options]="employeeType" class="dropdown-without-border"
+                        formControlName="EmployeeName" optionLabel="Value" optionValue="Key"
+                        placeholder="نوع کارمند را انتخاب کنید"
+                        styleClass="dropdown-custom"></p-dropdown>
+          </div>
+        </div>
+        <div class="flex items-center md:flex-nowrap flex-wrap">
+          <div class="mr-1 w-full md:w-1/2 my-4">
+            <div class="required">قیمت پایه</div>
+            <input [class.input-custom-error-2]="myForm.get('BasePrice')?.hasError('required')"
+                   class="input-custom max-h-[36px] w-full"
+                   formControlName="BasePrice"/>
+          </div>
+          <div class="mr-1 w-full md:w-1/2">
+            <div class="required">قیمت تعداد</div>
+            <input [class.input-custom-error-2]="myForm.get('SecondPrice')?.hasError('required')"
+                   class="input-custom max-h-[36px] w-full"
+                   formControlName="SecondPrice"/>
+          </div>
+        </div>
+        <div class="flex items-center md:flex-nowrap flex-wrap">
+          <div class="mr-1 w-full md:w-1/2 my-4">
+            <div class="required">هزینه کنسلی</div>
+            <input [class.input-custom-error-2]="myForm.get('PrePayment')?.hasError('required')"
+                   class="input-custom max-h-[36px] w-full"
+                   formControlName="PrePayment"/>
+          </div>
+          <div class="mr-1 w-full md:w-1/2 my-4">
+            <div class="required">درصد سود</div>
+            <input [class.input-custom-error-2]="myForm.get('PrePayment')?.hasError('required')"
+                   class="input-custom max-h-[36px] w-full"
+                   formControlName="Percent"/>
+          </div>
+        </div>
+        <div class="flex items-center md:flex-nowrap flex-wrap">
+          <div class="mr-1 w-full my-4">
+            <div>توضیحات</div>
+            <p-editor [style]="{ height: '320px' }" formControlName="Description"></p-editor>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <button (click)="addUser()"
+                class="text-white px-6 py-2 bg-secondary rounded-lg {{isSubmitting ? 'pointer-events-none opacity-50' : ''}}">
+          {{editMode ? 'ثبت ویرایش' : 'ذخیره'}}
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

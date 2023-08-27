@@ -1,0 +1,22 @@
+<div>
+  <div class="flex items-center justify-between mb-3 flex-wrap sm:flex-nowrap">
+    <div class="w-full sm:ml-2">
+      <div>استان</div>
+      <p-dropdown (onChange)="sendData($event,'provinceId')" [(ngModel)]="selectedProvince" [filter]="true"
+                  [options]="province"
+                  optionLabel="Name" placeholder="استان خود را انتخاب کنید"
+                  styleClass="dropdown-custom"></p-dropdown>
+    </div>
+    <div class="w-full">
+      <div>شهر</div>
+      <p-dropdown (onChange)="sendData($event,'cityId')" [(ngModel)]="selectedCity" [filter]="true"
+                  [options]="cities" emptyMessage="ابتدا استان مورد نظر خود را انتخاب کنید."
+                  optionLabel="Name" placeholder="شهر خود را انتخاب کنید"
+                  styleClass="dropdown-custom"></p-dropdown>
+    </div>
+  </div>
+  <div>
+    <textarea (ngModelChange)="sendData($event,'address')" [(ngModel)]="address"
+              class="w-full rounded-[8px] min-h-[110px] p-3" placeholder="آدرس خود را به شکل دقیق وارد کنید"></textarea>
+  </div>
+</div>

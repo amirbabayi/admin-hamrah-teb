@@ -1,0 +1,6 @@
+<div class="m-2 mr-0 relative w-full sm:w-[250px]">
+  <input [placeholder]="placeholder" class="search-input w-full" [(ngModel)]="text"
+         (ngModelChange)="searching($event)"
+         [type]="type"/>
+  <i class="absolute right-[5px] top-[25%]" inlineSVG="assets/icons/search.svg"></i>
+</div>

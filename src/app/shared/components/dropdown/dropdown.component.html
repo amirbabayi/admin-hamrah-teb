@@ -1,0 +1,6 @@
+<div class="m-2 mr-0 relative w-full sm:w-[250px]">
+  <p-dropdown [placeholder]="placeholder" class="w-full" styleClass="search-dropdown" [(ngModel)]="selectedItem"
+              (ngModelChange)="searching($event)" [options]="data" [optionValue]="optionValue"
+              [optionLabel]="optionLabel" [showClear]="true" [filter]="true" emptyMessage="موردی یافت نشد."
+              emptyFilterMessage="موردی یافت نشد." [resetFilterOnHide]="true"></p-dropdown>
+</div>

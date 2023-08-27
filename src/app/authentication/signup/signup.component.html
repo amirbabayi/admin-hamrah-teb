@@ -1,0 +1,96 @@
+<div class="auth-container">
+  <div class="flex auth-main">
+    <div class="w-1/2 px-0 hidden sm:block">
+      <div class="left-img" style="background-image: url(assets/images/pages/bg-02.png);">
+      </div>
+    </div>
+    <div class="w-full sm:w-1/2 auth-form-section px-5 sm:px-0">
+      <div class="form-section">
+        <div class="auth-wrapper">
+          <h2 class="welcome-msg"> ثبت نام </h2>
+          <p class="auth-signup-text text-muted">برای ساخت حساب کاربری اطلاعات خود را وارد کنید.</p>
+          <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div>نام کاربری</div>
+                <input formControlName="username" class="input-custom"
+                       [class.input-custom-error]="authForm.get('username')?.hasError('required') && authForm.get('username')?.touched"/>
+                <div class="text-error"
+                     *ngIf="authForm.get('username')?.hasError('required') && authForm.get('username')?.touched">
+                  نام کاربری نباید خالی باشد!
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div>ایمیل</div>
+                <input formControlName="email" class="input-custom"
+                       [class.input-custom-error]="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched"/>
+                <div class="text-error"
+                     *ngIf="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched">
+                  لطفا یک ایمیل معتبر وارد کنید
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div>رمز عبور</div>
+                <input formControlName="password" [type]="hide ? 'password' : 'text'" class="input-custom"
+                       [class.input-custom-error]="authForm.get('password')?.hasError('required') && authForm.get('password')?.touched"/>
+                <a href="#" onClick="return false;" (click)="hide = !hide"
+                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                </a>
+                <div class="text-error"
+                     *ngIf="authForm.get('password')?.hasError('required') && authForm.get('password')?.touched">
+                  رمز عبور نباید خالی باشد!
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div>تکرار رمز عبور</div>
+                <input formControlName="cpassword" [type]="chide ? 'password' : 'text'" class="input-custom"
+                       [class.input-custom-error]="authForm.get('cpassword')?.hasError('required') && authForm.get('cpassword')?.touched"/>
+                <a href="#" onClick="return false;" (click)="chide = !chide"
+                   [attr.aria-label]="'Hide password'" [attr.aria-pressed]="chide">
+                </a>
+                <div class="text-error"
+                     *ngIf="authForm.get('cpassword')?.hasError('required') && authForm.get('cpassword')?.touched">
+                  تکرار رمز عبور نباید خالی باشد!
+                </div>
+              </div>
+            </div>
+            <div class="flex-sb-m w-full  p-b-20">
+              <div>
+                <span>حساب کاربری دارید؟
+                  <a class="sign-up-link" routerLink="/authentication/signin">
+                    وارد شوید
+                  </a></span>
+              </div>
+            </div>
+            <div class="container-auth-form-btn relative">
+              <button class="auth-form-btn" [class.auth-spinner]="loading" [disabled]="!authForm.valid " type="submit">
+                ثبت نام
+              </button>
+            </div>
+          </form>
+          <h6 class="social-login-title">یا</h6>
+          <ul class="list-unstyled flex justify-center items-center social-icon mt-3">
+            <li class="list-inline-item mx-1"><a href="javascript:void(0)" class="rounded">
+              <i inlineSVG="assets/icons/google.svg"></i>
+            </a></li>
+            <li class="list-inline-item mx-1"><a href="javascript:void(0)" class="rounded flex-c-m">
+              <i inlineSVG="assets/icons/facebook.svg"></i>
+            </a></li>
+            <li class="list-inline-item mx-1"><a href="javascript:void(0)" class="rounded">
+              <i inlineSVG="assets/icons/twitter.svg"></i>
+            </a></li>
+            <li class="list-inline-item mx-1"><a href="javascript:void(0)" class="rounded">
+              <i inlineSVG="assets/icons/linkedin.svg"></i>
+            </a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

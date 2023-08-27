@@ -1,0 +1,87 @@
+{
+  "HEADER":{
+    "SEARCH": {
+      "TEXT": "جستجو.."
+    }
+  },
+  "MENUITEMS": {
+    "USER":{
+      "POST": "مدیر"
+    },
+    "MAIN": {
+      "TEXT": "اصلی"
+    },
+    "DASHBOARD": {
+      "TEXT": "میزکار",
+      "LIST": {
+        "DASHBOARD1": "میزکار 1",
+        "DASHBOARD2": "میزکار 2",
+        "DASHBOARD3": "میزکار 3"
+      }
+    },
+    "Duties": {
+      "TEXT": "مدیریت خدمات"
+    },
+    "Blogs": {
+      "TEXT": "مدیریت مقالات"
+    },
+    "APPS": {
+      "TEXT": "برنامه ها"
+    },
+    "CALENDAR": {
+      "TEXT": "تقویم"
+    },
+    "TASK": {
+      "TEXT": "وظایف"
+    },
+    "CONTACTS": {
+      "TEXT": "مخاطبان"
+    },
+    "EMAIL": {
+      "TEXT": "ایمیل",
+      "LIST": {
+        "INBOX": "صندوق ورودی",
+        "COMPOSE": "Compose",
+        "READ": "Read Email"
+      }
+    },
+    "MORE-APPS": {
+      "TEXT": "برنامه های بیشتر",
+      "LIST": {
+        "CHAT": "گفتگو",
+        "SUPPORT": "پشتیبانی",
+        "DRAG-DROP": "Drag & Drop",
+        "CONTACT-GRID": "دفترچه مخاطبان"
+      }
+    },
+    "COMPONENTS": {
+      "TEXT": "کامپوننت ها"
+    },
+    "WIDGETS": {
+      "TEXT": "ویجت ها",
+      "LIST": {
+        "CHART-WIDGET": "Chart-Widget",
+        "DATA-WIDGET": "Data-Widget"
+      }
+    },
+    "FORMS": {
+      "TEXT": "فرم ها",
+      "LIST": {
+        "CONTROLS": "Form Controls",
+        "ADVANCE": "Advance Control",
+        "EXAMPLE": "Form Examples",
+        "VALIDATION": "Form Validation",
+        "WIZARD": "Wizard",
+        "EDITORS": "Editors"
+      }
+    },
+    "TABLES": {
+      "TEXT": "جداول",
+      "LIST": {
+        "BASIC": "Basic Tables",
+        "MATERIAL": "Material Tables",
+        "NGX-DATATABLE": "NGX-Datatable"
+      }
+    }
+  }
+}

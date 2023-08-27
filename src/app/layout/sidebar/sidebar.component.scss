@@ -1,0 +1,7 @@
+.menu-top {
+  @apply flex items-center #{!important};
+
+  span {
+    @apply mr-2 #{!important};
+  }
+}

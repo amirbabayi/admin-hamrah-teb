@@ -1,0 +1,55 @@
+<nav class="nav-container mx-0 mx-auto bg-white">
+  <div>
+    <i (click)="toggleMenu()" class="mr-3 block lg:hidden" inlineSVG="assets/icons/menu-hamburger.svg"></i>
+  </div>
+  <div class="flex items-center">
+    <div class="ml-3" *ngIf="user?.Roles === 'Nurse'">
+      <i class="cursor-pointer block max-w-max" inlineSVG="assets/icons/change-password.svg"
+         pTooltip="تغییر رمز" tooltipPosition="top" (click)="showModalForChangePassword = true"></i>
+    </div>
+    <div *ngIf="user" class="flex items-center justify-end pt-1">
+      {{user.Username}}
+    </div>
+    <a class="mx-3 cursor-pointer" (click)="exit()">
+      <img src="./assets/icons/Exit.svg" alt=""/>
+    </a>
+  </div>
+</nav>
+<p-confirmDialog class="exit-dialog" #cd [style]="{ width: '640px' }">
+  <ng-template pTemplate="header">
+    <div class="text-center mt-6">
+      <i class="flex justify-center" inlineSVG="assets/icons/Error-2.svg"></i>
+      <h3 class="mt-3 text-gray-dark text-[18px]">آیا از خروج از داشبود اطمینان دارید؟</h3>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button class="reject-label" type="button" pButton label="بازگشت و انصراف" (click)="cd.reject()"></button>
+    <button class="accept-label" type="button" pButton label="خروج از داشبورد" (click)="cd.accept()"></button>
+  </ng-template>
+</p-confirmDialog>
+<p-dialog header="تغییر رمز" [(visible)]="showModalForChangePassword" [modal]="true" [draggable]="false"
+          [resizable]="false" (onHide)="closeModal()" [closable]="true"
+          [style]="{ backgroundColor:'#f0eff3','min-width': 'max-content' }"
+          class="custom-dialog">
+  <div>
+    <form class="form-controller" [formGroup]="myForm">
+      <div class="mr-1 w-[340px] my-4">
+        <div>رمز عبور جدید</div>
+        <input class="input-custom max-h-[36px] w-full" formControlName="password" autofocus placeholder="12345678"
+               [class.input-custom-error-2]="myForm.get('password')?.hasError('required')"/>
+      </div>
+      <div class="mr-1 w-[340px] my-4">
+        <div>تکرار رمز عبور جدید</div>
+        <input class="input-custom max-h-[36px] w-full" formControlName="confirmPassword" autofocus
+               placeholder="12345678"
+               [class.input-custom-error-2]="myForm.get('confirmPassword')?.hasError('required')"/>
+      </div>
+      <div class="flex justify-end">
+        <button (click)="changePasswordFunc()"
+                class="text-white px-6 py-2 bg-secondary rounded-lg {{isSubmitting ? 'pointer-events-none opacity-50' : ''}}">
+          ذخیره
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

@@ -1,0 +1,135 @@
+<ng-container *ngIf="users ; else showSpinner">
+  <div class="search-container justify-between">
+    <div class="sm:flex items-center flex-wrap w-full">
+      <app-search-input [queryString]="'Username'" [placeholder]="'سرچ براساس نام کاربری'"
+                        (isSearchingFunc)="isSearching($event)"></app-search-input>
+      <app-search-input [queryString]="'Roles'" [placeholder]="'سرچ براساس نقش کاربر'"
+                        (isSearchingFunc)="isSearching($event)"></app-search-input>
+    </div>
+    <div>
+      <button class="my-2 py-2 px-4 bg-secondary rounded-md text-white flex items-center" (click)="showModal = true">
+        <i inlineSVG="assets/icons/plus-white.svg" class="ml-2"></i>
+        جدید
+      </button>
+    </div>
+  </div>
+  <div class="table-container">
+    <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }" class="custom-table">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>نام کاربری</th>
+          <th>نقش کاربر</th>
+          <th class="max-w-[20px]"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-customer>
+        <tr>
+          <td>{{customer.Username}}</td>
+          <td>
+            <div
+              class="max-w-max h-[22px] opacity-80 rounded-[22px] flex items-center px-6  bg-primary text-white text-[12px]">
+              <div class="h-[14px]">
+                {{customer.Roles}}
+              </div>
+            </div>
+          </td>
+          <td class="flex items-center justify-end">
+            <i class="cursor-pointer block max-w-max" inlineSVG="assets/icons/change-password.svg"
+               pTooltip="تغییر رمز" tooltipPosition="top" (click)="changePassword(customer)"></i>
+            <i class="cursor-pointer block max-w-max ml-3 mr-1" inlineSVG="assets/icons/edit.svg"
+               pTooltip="ویرایش نقش" tooltipPosition="top" (click)="edit(customer)"></i>
+            <img class="cursor-pointer block max-w-max" src="assets/icons/recycle-red.svg" alt=""
+                 pTooltip="حذف" tooltipPosition="top" (click)="confirm($event,customer?.Id)"/>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3" style="text-align: center!important;">کاربری یافت نشد.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div>
+    <p-paginator
+      *ngIf="totalCount"
+      (onPageChange)="onPageChange($event)"
+      [rows]="pageSize"
+      [totalRecords]="totalCount"
+      class="paginator-custom"></p-paginator>
+  </div>
+</ng-container>
+<ng-template #showSpinner>
+  <div class="flex items-center justify-center h-[calc(100vh_-_100px)]">
+    <app-spinner [spinnerColor]="'#000'"></app-spinner>
+  </div>
+</ng-template>
+
+<p-dialog [header]="editMode ? 'ویرایش کاربر' : 'کاربر جدید'" [(visible)]="showModal" [modal]="true" [draggable]="false"
+          [resizable]="false"
+          (onHide)="closeModal()" [closable]="true"
+          [style]="{ backgroundColor:'#f0eff3','min-width': 'max-content','min-height': '500px' }"
+          class="custom-dialog">
+  <div>
+    <form class="form-controller" [formGroup]="myForm">
+      <div class="flex items-center md:flex-nowrap flex-wrap">
+        <div class="flex items-center md:flex-nowrap flex-wrap" *ngIf="!editMode">
+          <div class="mr-1 w-full md:w-1/2 my-4">
+            <div class="required">نام کاربری</div>
+            <input class="input-custom max-h-[36px] w-full" formControlName="username" autofocus placeholder="user123"
+                   [class.input-custom-error-2]="myForm.get('username')?.hasError('required')"/>
+          </div>
+          <div class="mr-1 w-full md:w-1/2">
+            <div class="required">رمز عبور</div>
+            <input class="input-custom max-h-[36px] w-full" formControlName="password" placeholder="12345678"
+                   [class.input-custom-error-2]="myForm.get('password')?.hasError('required')"/>
+          </div>
+        </div>
+        <div class="flex items-center md:flex-nowrap flex-wrap" *ngIf="editMode">
+          <div class="mr-1 w-[340px] my-4">
+            <div class="required">نام کاربری</div>
+            <input class="input-custom max-h-[36px] w-full" formControlName="username" autofocus placeholder="user123"
+                   [class.input-custom-error-2]="myForm.get('username')?.hasError('required')"/>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap">
+        <div class="required">نقش ها</div>
+        <p-multiSelect [options]="roles" formControlName="roles" optionLabel="Value" optionValue="Value"
+                       [styleClass]="myForm.get('roles')?.hasError('required') ? 'input-custom-error-2' : ''"
+                       class="custom-multi-select" placeholder="نقش را انتخاب کنید"></p-multiSelect>
+      </div>
+      <div class="h-[200px]"></div>
+      <div class="flex justify-end">
+        <button (click)="addUser()"
+                class="text-white px-6 py-2 bg-secondary rounded-lg {{isSubmitting ? 'pointer-events-none opacity-50' : ''}}">
+          {{editMode ? 'ثبت ویرایش' : 'ذخیره'}}
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+<p-dialog header="تغییر رمز" [(visible)]="showModalForChangePassword" [modal]="true" [draggable]="false"
+          [resizable]="false" (onHide)="closeModal()" [closable]="true"
+          [style]="{ backgroundColor:'#f0eff3','min-width': 'max-content' }"
+          class="custom-dialog">
+  <div>
+    <form class="form-controller" [formGroup]="changePasswordForm">
+      <div class="flex items-center md:flex-nowrap flex-wrap">
+        <div class="flex items-center md:flex-nowrap flex-wrap">
+          <div class="mr-1 w-[340px] my-4">
+            <div>رمز عبور جدید</div>
+            <input class="input-custom max-h-[36px] w-full" formControlName="password" autofocus placeholder="12345678"
+                   [class.input-custom-error-2]="changePasswordForm.get('password')?.hasError('required')"/>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <button (click)="changePasswordFunc()"
+                class="text-white px-6 py-2 bg-secondary rounded-lg {{isSubmitting ? 'pointer-events-none opacity-50' : ''}}">
+          {{editMode ? 'ثبت ویرایش' : 'ذخیره'}}
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

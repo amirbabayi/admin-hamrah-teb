@@ -1,0 +1,7 @@
+<div class="m-2 mr-0 relative w-full sm:w-[250px]">
+  <p-autoComplete [placeholder]="placeholder" styleClass="search-dropdown search-auto-complete w-full"
+                  (completeMethod)="searching($event)" (onSelect)="itemSelected($event)" [suggestions]="data"
+                  [field]="field" [showClear]="true" (onClear)="clearSearch()">
+  </p-autoComplete>
+  <i class="absolute right-[5px] top-[25%]" inlineSVG="assets/icons/search.svg"></i>
+</div>
